@@ -74,7 +74,7 @@ options = oparser.parse_args()
 
 
 set_working_directory(options)
-set_working_base()
+set_working_base(options)
 
 if not options.dry_run:
     os.mkdir(options.working_dir)
