@@ -77,8 +77,8 @@ set_working_directory(options)
 set_working_base(options)
 
 if not options.dry_run:
-    os.mkdir(options.working_dir)
-    os.mkdir(options.output_dir)
+    os.makedirs(options.working_dir, exist_ok=True)
+    os.makedirs(options.output_dir, exist_ok=True)
 
 tokenizer = os.path.join(options.moses_dir, 'scripts', 'tokenizer', 'tokenizer.perl')
 truecase_trainer = os.path.join(options.moses_dir, 'scripts', 'recaser', 'train-truecaser.perl')
