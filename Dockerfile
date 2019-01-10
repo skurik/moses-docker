@@ -66,3 +66,4 @@ WORKDIR /home/moses/giza-pp
 RUN cp GIZA++-v2/GIZA++ GIZA++-v2/snt2cooc.out mkcls-v2/mkcls /home/moses/mosesdecoder/tools
 
 WORKDIR /home/moses
+COPY train.py .
