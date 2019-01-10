@@ -2,8 +2,7 @@
 import argparse
 import os.path
 import subprocess
-
-import maya
+from datetime import datetime
 
 
 def set_working_directory(options):
@@ -11,7 +10,7 @@ def set_working_directory(options):
     if options.working_dir:
         return
     training_data_dir = os.path.dirname(options.input_base)
-    timestamp = maya.now().iso8601().split('.')[0].replace('-', '').replace(':', '')
+    timestamp = datetime.now().isoformat().split('.')[0].replace('-', '').replace(':', '')
     # e.g., '20190110T125556'
     subdirectory = 'working_%s' % timestamp
     options.working_dir = os.path.join(training_data_dir, subdirectory)
