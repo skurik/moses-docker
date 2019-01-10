@@ -5,7 +5,7 @@ To create the image, run
 
     $ git clone https://github.com/skurik/moses-docker.git
     $ cd moses-docker
-    $ docker create -t <user>/moses .
+    $ docker build -t <user>/moses .
     
 To run the container, execute
 
