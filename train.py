@@ -23,7 +23,7 @@ def set_working_base(options):
 
 
 def run_command(command, options):
-    print('>  %s' % ' '.join(command))
+    print('$  %s' % ' '.join(command))
     if not options.dry_run:
         subprocess.call(command)
     return
@@ -105,6 +105,11 @@ training_out = os.path.join(options.working_dir, 'training.out')
 
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l en <news-commentary-v9.ru-en.en >news-commentary-v9.ru-en.tok.en
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru <news-commentary-v9.ru-en.ru >news-commentary-v9.ru-en.tok.ru
+
+# TODO
+# Wrong! > < in subprocess
+# https://stackoverflow.com/questions/4965159/python-how-to-redirect-output-with-subprocess
+# subprocess.call(command, stdout=FILE, ...)
 
 command = [tokenizer, '-l', options.target_language, '<', '%s.%s' % (options.input_base, options.target_language),
            '>', tokenized_source]
