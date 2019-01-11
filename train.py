@@ -7,17 +7,11 @@ from datetime import datetime
 
 def set_working_directory(options):
     # Do nothing if the user set the directory
-    if options.working_dir:
-        return
-    training_data_dir = os.path.dirname(options.input_base)
-    timestamp = datetime.now().isoformat().split('.')[0].replace('-', '').replace(':', '')
-    # e.g., '20190110T125556'
-    subdirectory = 'working_%s' % timestamp
-    options.working_dir = os.path.join(training_data_dir, subdirectory)
-    return
-
-
-def set_working_base(options):
+    if not options.working_dir:
+        timestamp = datetime.now().isoformat().split('.')[0].replace('-', '').replace(':', '')
+        # e.g., '20190110T125556'
+        subdirectory = 'working_%s' % timestamp
+        options.working_dir = os.path.join(options.output_dir, subdirectory)
     options.working_file_base = os.path.join(options.working_dir, options.input_base)
     return
 
@@ -35,17 +29,12 @@ def run_command(command, options, infile=None, outfile=None, errfile=None):
 
 oparser = argparse.ArgumentParser(description='Train a Moses model from a standard training set')
 
-oparser.add_argument('-d', dest='debug',
-                     default=False, action='store_true',
-                     help='debugging')
-
 oparser.add_argument('-n', dest='dry_run',
                      default=False, action='store_true',
                      help='dry run')
 
 oparser.add_argument('-s', dest='source_language',
-                     type=str,
-                     required=True,
+                     default='ru',
                      help='source language')
 
 oparser.add_argument('-t', dest='target_language',
@@ -53,35 +42,38 @@ oparser.add_argument('-t', dest='target_language',
                      help='target language (default en)')
 
 oparser.add_argument('-o', dest='output_dir',
-                     required=True,
+                     default='/data/models/output',
                      help='model output directory')
 
 oparser.add_argument('-u', dest='tuning_base',
-                     required=True,
-                     help='tuning files (without "." and language extension)')
+                     default='/data/training/tuning/newstest2013',
+                     help='tuning files without "." and 2-letter language code extension')
 
 oparser.add_argument('-w', dest='working_dir',
                      default=None,
                      help='working directory for training data')
 
 oparser.add_argument('-m', dest='moses_dir',
-                     required=True,
-                     help='moses directory (required; usually called "mosesdecoder"; '
+                     default='/home/moses/mosesdecoder/',
+                     help='moses directory (usually called "mosesdecoder"; '
                           'contains scripts and bin subdirectories)')
 
 oparser.add_argument('-i', dest='input_base',
-                     required=True,
-                     help='input filename without the . and 2-letter extension at the end')
+                     default='/data/training/training-commoncrawl/commoncrawl.ru-en',
+                     help='input filenames without "." and 2-letter language code extension')
 
 options = oparser.parse_args()
 
 
 set_working_directory(options)
-set_working_base(options)
 
 if not options.dry_run:
     os.makedirs(options.working_dir, exist_ok=True)
     os.makedirs(options.output_dir, exist_ok=True)
+
+print('Output directory', options.output_dir)
+print('Working directory', options.working_dir)
+print()
 
 tokenizer = os.path.join(options.moses_dir, 'scripts', 'tokenizer', 'tokenizer.perl')
 truecase_trainer = os.path.join(options.moses_dir, 'scripts', 'recaser', 'train-truecaser.perl')
