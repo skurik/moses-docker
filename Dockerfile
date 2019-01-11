@@ -21,6 +21,7 @@ RUN apt-get install -y \
    python-dev \
    libsoap-lite-perl \
    libxmlrpc-core-c3-dev libxmlrpc-c++8-dev \
+   locales \
    google-perftools
 
 RUN mkdir -p /home/moses
