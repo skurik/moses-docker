@@ -114,8 +114,8 @@ training_out = os.path.join(options.working_dir, 'training.out')
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru
 #    <news-commentary-v9.ru-en.ru >news-commentary-v9.ru-en.tok.ru
 
-with open('%s.%s' % (options.input_base, options.target_language)) as infile, open(tokenized_source, 'w') as outfile:
-    command = [tokenizer, '-l', options.target_language]
+with open('%s.%s' % (options.input_base, options.source_language)) as infile, open(tokenized_source, 'w') as outfile:
+    command = [tokenizer, '-l', options.source_language]
     run_command(command, options, infile=infile, outfile=outfile)
 
 with open('%s.%s' % (options.input_base, options.target_language)) as infile, open(tokenized_target, 'w') as outfile:

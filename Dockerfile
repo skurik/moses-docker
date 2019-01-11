@@ -68,3 +68,4 @@ RUN cp GIZA++-v2/GIZA++ GIZA++-v2/snt2cooc.out mkcls-v2/mkcls /home/moses/mosesd
 WORKDIR /home/moses
 COPY train.py .
 COPY train.sh .
+COPY dry-run.sh .
