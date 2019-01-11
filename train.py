@@ -24,7 +24,11 @@ def run_command(command, options, infile=None, outfile=None, errfile=None):
     if outfile:
         print('  >', outfile)
     if not options.dry_run:
-        subprocess.call(command, stdin=infile, stdout=outfile, stderr=errfile)
+        if errfile is None:
+            errfile = subprocess.PIPE
+        p = subprocess.call(command, stdin=infile, stdout=outfile, stderr=errfile)
+        print(p.stderr)
+    print()
     return
 
 
