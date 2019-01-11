@@ -1,5 +1,5 @@
 # Version 0.0.1
-FROM ubuntu:14.04
+FROM ubuntu:cosmic
 
 MAINTAINER Standa Kurik "standa.kurik@gmail.com"
 
