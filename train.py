@@ -12,7 +12,8 @@ def set_working_directory(options):
         # e.g., '20190110T125556'
         subdirectory = 'working_%s' % timestamp
         options.working_dir = os.path.join(options.output_dir, subdirectory)
-    options.working_file_base = os.path.join(options.working_dir, options.input_base)
+    options.working_file_base = os.path.join(options.working_dir,
+                                             os.path.basename(options.input_base))
     return
 
 
@@ -159,6 +160,9 @@ run_command(command, options)
 # -corpus /data/adam/training-nc-v9/news-commentary-v9.ru-en.clean -f ru -e en -alignment grow-diag-final-and
 # -reordering msd-bidirectional-fe -lm 0:3:/data/adam/training-nc-v9/news-commentary-v9.ru-en.blm.en:8
 # -external-bin-dir /home/moses/mosesdecoder/tools >& training.out &
+
+if not options.dry_run:
+    os.makedirs(train_dir, exist_ok=True)
 
 with open(training_out, 'w') as errfile:
     command = [trainer, '--root-dir', train_dir, '-corpus', cleaned_file, '-f', options.source_language,
