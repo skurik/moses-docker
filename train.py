@@ -26,7 +26,7 @@ def run_command(command, options, infile=None, outfile=None, errfile=None):
     if not options.dry_run:
         if errfile is None:
             errfile = subprocess.PIPE
-        p = subprocess.call(command, stdin=infile, stdout=outfile, stderr=errfile)
+        p = subprocess.run(command, stdin=infile, stdout=outfile, stderr=errfile)
         print(p.stderr)
     print()
     return
