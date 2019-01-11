@@ -22,12 +22,15 @@ def set_working_base(options):
     return
 
 
-def run_command(command, options):
+def run_command(command, options, infile=None, outfile=None, errfile=None):
     print('$  %s' % ' '.join(command))
+    if infile:
+        print('  <', infile)
+    if outfile:
+        print('  >', outfile)
     if not options.dry_run:
-        subprocess.call(command)
+        subprocess.call(command, stdin=infile, stdout=outfile, stderr=errfile)
     return
-
 
 
 oparser = argparse.ArgumentParser(description='Train a Moses model from a standard training set')
@@ -103,24 +106,26 @@ blm_file = options.working_file_base + '.blm.' + options.target_language
 train_dir = os.path.join(options.output_dir, 'train')
 training_out = os.path.join(options.working_dir, 'training.out')
 
-# /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l en <news-commentary-v9.ru-en.en >news-commentary-v9.ru-en.tok.en
-# /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru <news-commentary-v9.ru-en.ru >news-commentary-v9.ru-en.tok.ru
-
-# TODO
-# Wrong! > < in subprocess
 # https://stackoverflow.com/questions/4965159/python-how-to-redirect-output-with-subprocess
 # subprocess.call(command, stdout=FILE, ...)
 
-command = [tokenizer, '-l', options.target_language, '<', '%s.%s' % (options.input_base, options.target_language),
-           '>', tokenized_source]
-run_command(command, options)
+# /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l en
+#    <news-commentary-v9.ru-en.en >news-commentary-v9.ru-en.tok.en
+# /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru
+#    <news-commentary-v9.ru-en.ru >news-commentary-v9.ru-en.tok.ru
 
-command = [tokenizer, '-l', options.target_language, '<', '%s.%s' % (options.input_base, options.target_language),
-           '>', tokenized_target]
-run_command(command, options)
+with open('%s.%s' % (options.input_base, options.target_language)) as infile, open(tokenized_source, 'w') as outfile:
+    command = [tokenizer, '-l', options.target_language]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-# /home/moses/mosesdecoder/scripts/recaser/train-truecaser.perl --model /data/models/truecase-model.en --corpus news-commentary-v9.ru-en.tok.en
-# /home/moses/mosesdecoder/scripts/recaser/train-truecaser.perl --model /data/models/truecase-model.ru --corpus news-commentary-v9.ru-en.tok.ru
+with open('%s.%s' % (options.input_base, options.target_language)) as infile, open(tokenized_target, 'w') as outfile:
+    command = [tokenizer, '-l', options.target_language]
+    run_command(command, options, infile=infile, outfile=outfile)
+
+# /home/moses/mosesdecoder/scripts/recaser/train-truecaser.perl --model
+#   /data/models/truecase-model.en --corpus news-commentary-v9.ru-en.tok.en
+# /home/moses/mosesdecoder/scripts/recaser/train-truecaser.perl --model
+#   /data/models/truecase-model.ru --corpus news-commentary-v9.ru-en.tok.ru
 
 command = [truecase_trainer, '--model', true_source_model, '--corpus', tokenized_source]
 run_command(command, options)
@@ -128,25 +133,32 @@ run_command(command, options)
 command = [truecase_trainer, '--model', true_target_model, '--corpus', tokenized_target]
 run_command(command, options)
 
-# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.en  <news-commentary-v9.ru-en.tok.en  > news-commentary-v9.ru-en.true.en
-# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.ru  <news-commentary-v9.ru-en.tok.ru  > news-commentary-v9.ru-en.true.ru
+# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.en
+#   <news-commentary-v9.ru-en.tok.en  > news-commentary-v9.ru-en.true.en
+# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.ru
+#   <news-commentary-v9.ru-en.tok.ru  > news-commentary-v9.ru-en.true.ru
 
-command = [truecaser, '--model', true_source_model, '<', tokenized_source, '>', trued_source]
-run_command(command, options)
+with open(tokenized_source) as infile, open(trued_source, 'w') as outfile:
+    command = [truecaser, '--model', true_source_model, '<', tokenized_source, '>', trued_source]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-command = [truecaser, '--model', true_target_model, '<', tokenized_target, '>', trued_target]
-run_command(command, options)
+with open(tokenized_target) as infile, open(trued_target, 'w') as outfile:
+    command = [truecaser, '--model', true_target_model]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-# /home/moses/mosesdecoder/scripts/training/clean-corpus-n.perl news-commentary-v9.ru-en.true ru en news-commentary-v9.ru-en.clean 1 80
-# /home/moses/mosesdecoder/bin/lmplz -o 3 <news-commentary-v9.ru-en.true.en >news-commentary-v9.ru-en.arpa.en
+# /home/moses/mosesdecoder/scripts/training/clean-corpus-n.perl
+#   news-commentary-v9.ru-en.true ru en news-commentary-v9.ru-en.clean 1 80
+# /home/moses/mosesdecoder/bin/lmplz -o 3 <news-commentary-v9.ru-en.true.en
+#   >news-commentary-v9.ru-en.arpa.en
 # /home/moses/mosesdecoder/bin/build_binary news-commentary-v9.ru-en.arpa.en news-commentary-v9.ru-en.blm.en
 
 command = [cleaner, trued_base, options.target_language, options.source_language,
            cleaned_file, '1', '80']
 run_command(command, options)
 
-command = [lmplz, '-o', '3', '<', trued_source, '>', arpa_file]
-run_command(command, options)
+with open(trued_source) as infile, open(arpa_file, 'w') as outfile:
+    command = [lmplz, '-o', '3']
+    run_command(command, options, infile=infile, outfile=outfile)
 
 command = [builder, arpa_file, blm_file]
 run_command(command, options)
@@ -156,11 +168,12 @@ run_command(command, options)
 # -reordering msd-bidirectional-fe -lm 0:3:/data/adam/training-nc-v9/news-commentary-v9.ru-en.blm.en:8
 # -external-bin-dir /home/moses/mosesdecoder/tools >& training.out &
 
-command = [trainer, '--root-dir', train_dir, '-corpus', cleaned_file, '-f', options.source_language,
-           '-e', options.target_language, '-alignment', 'grow-diag-final-and',
-           '-reordering', 'msd-bidirectional-fe', '-m', '0:3:%s:8' % blm_file,
-           '-external-bin-dir', tools_dir, '&>', training_out]
-run_command(command, options)
+with open(training_out, 'w') as errfile:
+    command = [trainer, '--root-dir', train_dir, '-corpus', cleaned_file, '-f', options.source_language,
+               '-e', options.target_language, '-alignment', 'grow-diag-final-and',
+               '-reordering', 'msd-bidirectional-fe', '-m', '0:3:%s:8' % blm_file,
+               '-external-bin-dir', tools_dir]
+    run_command(command, options, outfile=errfile, errfile=errfile)
 
 working_tuning_base = os.path.join(options.working_dir, os.path.basename(options.tuning_base))
 tokenized_tuning_source = working_tuning_base + '.tok.' + options.source_language
@@ -171,24 +184,26 @@ trued_tuning_target = working_tuning_base + '.true.' + options.target_language
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l en <newstest2013.en >newstest2013.tok.en
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru <newstest2013.ru >newstest2013.tok.ru
 
-command = [tokenizer, '-l', options.source_language, '<', '%s.%s % (options.tuning_base, options.source_language)'
-           '>', tokenized_tuning_source]
-run_command(command, options)
+with open('%s.%s' % (options.tuning_base, options.source_language)) as infile, open (tokenized_tuning_source, 'w') as outfile:
+    command = [tokenizer, '-l', options.source_language]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-command = [tokenizer, '-l', options.target_language, '<', '%s.%s % (options.tuning_base, options.target_language)'
-                                                          '>', tokenized_tuning_target]
-run_command(command, options)
+with open('%s.%s' % (options.tuning_base, options.target_language)) as infile, open(tokenized_tuning_target, 'w') as outfile:
+    command = [tokenizer, '-l', options.target_language]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.en <newstest2013.tok.en >newstest2013.true.en
-# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.ru <newstest2013.tok.ru >newstest2013.true.ru
+# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.en
+#    <newstest2013.tok.en >newstest2013.true.en
+# /home/moses/mosesdecoder/scripts/recaser/truecase.perl --model /data/models/truecase-model.ru
+#    <newstest2013.tok.ru >newstest2013.true.ru
 
-command = [truecaser, '--model', true_source_model, '<', tokenized_tuning_source,
-           '>', trued_tuning_source]
-run_command(command, options)
+with open(tokenized_tuning_source) as infile, open(trued_tuning_source, 'w') as outfile:
+    command = [truecaser, '--model', true_source_model]
+    run_command(command, options, infile=infile, outfile=outfile)
 
-command = [truecaser, '--model', true_target_model, '<', tokenized_tuning_target,
-           '>', trued_tuning_target]
-run_command(command, options)
+with open(tokenized_tuning_target) as infile, open(trued_tuning_target, 'w') as outfile:
+    command = [truecaser, '--model', true_target_model]
+    run_command(command, options, infile=infile, outfile=outfile)
 
 # nohup /home/moses/mosesdecoder/scripts/training/mert-moses.pl /data/adam/tuning/newstest2013.true.ru
 #  /data/adam/tuning/newstest2013.true.en /home/moses/mosesdecoder/bin/moses train/model/moses.ini
@@ -199,7 +214,7 @@ moses_bin = os.path.join(options.moses_dir, 'bin', 'moses')
 old_moses_ini = os.path.join(train_dir, 'model', 'moses.ini')
 mert_out = os.path.join(options.working_dir, 'mert.out')
 
-command = [merter, trued_tuning_source, trued_tuning_target, moses_bin, old_moses_ini,
-           '--mertdir', os.path.join(options.moses_dir, 'bin'),
-           '&>', mert_out]
-
+with open(mert_out, 'w') as errfile:
+    command = [merter, trued_tuning_source, trued_tuning_target, moses_bin, old_moses_ini,
+               '--mertdir', os.path.join(options.moses_dir, 'bin')]
+    run_command(command, options, outfile=errfile, errfile=errfile)
