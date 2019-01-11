@@ -148,7 +148,7 @@ command = [cleaner, trued_base, options.target_language, options.source_language
            cleaned_file, '1', '80']
 run_command(command, options)
 
-with open(trued_source) as infile, open(arpa_file, 'w') as outfile:
+with open(trued_target) as infile, open(arpa_file, 'w') as outfile:
     command = [lmplz, '-o', '3']
     run_command(command, options, infile=infile, outfile=outfile)
 
