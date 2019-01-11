@@ -24,6 +24,10 @@ RUN apt-get install -y \
    google-perftools
 
 RUN mkdir -p /home/moses
+RUN locale-gen en_GB.UTF-8
+ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
+ENV PYTHONIOENCODING=utf-8
+
 WORKDIR /home/moses
 
 # Build boost
