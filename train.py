@@ -27,7 +27,8 @@ def run_command(command, options, infile=None, outfile=None, errfile=None):
         if errfile is None:
             errfile = subprocess.PIPE
         p = subprocess.run(command, stdin=infile, stdout=outfile, stderr=errfile)
-        print(p.stderr.decode('utf-8', errors='ignore'))
+        if p.stderr: # not None
+            print(p.stderr.decode('utf-8', errors='ignore'))
     print()
     return
 
