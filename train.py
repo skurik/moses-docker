@@ -20,9 +20,9 @@ def set_working_directory(options):
 def run_command(command, options, infile=None, outfile=None, errfile=None):
     print('$  %s' % ' '.join(command))
     if infile:
-        print('  <', infile)
+        print('  <', infile.name)
     if outfile:
-        print('  >', outfile)
+        print('  >', outfile.name)
     if not options.dry_run:
         if errfile is None:
             errfile = subprocess.PIPE
