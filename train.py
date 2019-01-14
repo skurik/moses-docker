@@ -146,17 +146,19 @@ with open(tokenized_target) as infile, open(trued_target, 'w') as outfile:
 
 # /home/moses/mosesdecoder/scripts/training/clean-corpus-n.perl
 #   news-commentary-v9.ru-en.true ru en news-commentary-v9.ru-en.clean 1 80
-# /home/moses/mosesdecoder/bin/lmplz -o 3 <news-commentary-v9.ru-en.true.en
-#   >news-commentary-v9.ru-en.arpa.en
-# /home/moses/mosesdecoder/bin/build_binary news-commentary-v9.ru-en.arpa.en news-commentary-v9.ru-en.blm.en
 
-command = [cleaner, trued_base, options.target_language, options.source_language,
+command = [cleaner, trued_base, options.source_language, options.target_language,
            cleaned_file, '1', '80']
 run_command(command, options)
+
+# /home/moses/mosesdecoder/bin/lmplz -o 3 <news-commentary-v9.ru-en.true.en
+#   >news-commentary-v9.ru-en.arpa.en
 
 with open(trued_target) as infile, open(arpa_file, 'w') as outfile:
     command = [lmplz, '-o', '3']
     run_command(command, options, infile=infile, outfile=outfile)
+
+# /home/moses/mosesdecoder/bin/build_binary news-commentary-v9.ru-en.arpa.en news-commentary-v9.ru-en.blm.en
 
 command = [builder, arpa_file, blm_file]
 run_command(command, options)
