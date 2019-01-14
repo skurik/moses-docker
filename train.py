@@ -27,7 +27,7 @@ def run_command(command, options, infile=None, outfile=None, errfile=None):
         if errfile is None:
             errfile = subprocess.PIPE
         p = subprocess.run(command, stdin=infile, stdout=outfile, stderr=errfile)
-        print(p.stderr)
+        print(p.stderr.decode('utf-8', errors='ignore'))
     print()
     return
 
@@ -184,7 +184,7 @@ trued_tuning_target = working_tuning_base + '.true.' + options.target_language
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l en <newstest2013.en >newstest2013.tok.en
 # /home/moses/mosesdecoder/scripts/tokenizer/tokenizer.perl -l ru <newstest2013.ru >newstest2013.tok.ru
 
-with open('%s.%s' % (options.tuning_base, options.source_language)) as infile, open (tokenized_tuning_source, 'w') as outfile:
+with open('%s.%s' % (options.tuning_base, options.source_language)) as infile, open(tokenized_tuning_source, 'w') as outfile:
     command = [tokenizer, '-l', options.source_language]
     run_command(command, options, infile=infile, outfile=outfile)
 
