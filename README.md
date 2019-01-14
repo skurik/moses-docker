@@ -1,5 +1,5 @@
 # moses-docker
-An Ubuntu 14.04-based dockerfile for running [Moses](http://www.statmt.org/moses)
+An Ubuntu 18.10-based dockerfile for running [Moses](http://www.statmt.org/moses)
 
 To create the image, run
 
