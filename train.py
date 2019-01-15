@@ -174,7 +174,7 @@ if not options.dry_run:
 with open(training_out, 'w') as errfile:
     command = [trainer, '--root-dir', train_dir, '-corpus', cleaned_file, '-f', options.source_language,
                '-e', options.target_language, '-alignment', 'grow-diag-final-and',
-               '-reordering', 'msd-bidirectional-fe', '-m', '0:3:%s:8' % blm_file,
+               '-reordering', 'msd-bidirectional-fe', '-lm', '0:3:%s:8' % blm_file,
                '-external-bin-dir', tools_dir]
     run_command(command, options, outfile=errfile, errfile=errfile)
 
