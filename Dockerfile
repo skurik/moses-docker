@@ -33,11 +33,11 @@ WORKDIR /home/moses
 
 # Build boost
 #
-RUN wget http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.gz
-RUN tar zxvf boost_1_55_0.tar.gz
-WORKDIR /home/moses/boost_1_55_0
-RUN ./bootstrap.sh
-RUN ./b2 -j8 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
+# RUN wget http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.gz
+# RUN tar zxvf boost_1_55_0.tar.gz
+# WORKDIR /home/moses/boost_1_55_0
+# RUN ./bootstrap.sh
+# RUN ./b2 -j8 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
 
 # Build cmph
 #
@@ -52,7 +52,8 @@ RUN ./configure --prefix=/usr/local && make && make install prefix=/usr/local/cm
 WORKDIR /home/moses
 RUN git clone https://github.com/moses-smt/mosesdecoder.git
 WORKDIR /home/moses/mosesdecoder
-RUN ./bjam --with-boost=/home/moses/boost_1_55_0 --with-cmph=/usr/local/cmph -j8  --with-xmlrpc-c=/usr
+# RUN ./bjam --with-boost=/home/moses/boost_1_55_0 --with-cmph=/usr/local/cmph -j8  --with-xmlrpc-c=/usr
+RUN ./bjam --with-boost=/usr/lib/x86_64-linux-gnu --with-cmph=/usr/local/cmph -j8  --with-xmlrpc-c=/usr
 # The config adds "bin/xmlrpc-c-config" to that path
 
 WORKDIR /home/moses
