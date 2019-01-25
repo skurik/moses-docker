@@ -212,6 +212,10 @@ with open(tokenized_tuning_target) as infile, open(trued_tuning_target, 'w') as 
 #  /data/adam/tuning/newstest2013.true.en /home/moses/mosesdecoder/bin/moses train/model/moses.ini
 #  --mertdir /home/moses/mosesdecoder/bin &>mert.out &
 
+# TODO change the working directory for this: the
+# mert script creates ./mert-work and ./mert-work/moses.ini in
+# the CWD
+
 merter = os.path.join(options.moses_dir, 'scripts', 'training', 'mert-moses.pl')
 moses_bin = os.path.join(options.moses_dir, 'bin', 'moses')
 old_moses_ini = os.path.join(train_dir, 'model', 'moses.ini')
