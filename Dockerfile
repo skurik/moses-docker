@@ -3,26 +3,16 @@ FROM ubuntu:cosmic
 
 MAINTAINER Standa Kurik "standa.kurik@gmail.com"
 
+# ownership of /data/...
+# See https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+
 # base tools
 RUN apt-get update
 RUN apt-get install -y \
-   unzip \
-   build-essential \
-   wget \
-   g++ \
-   git \
-   subversion \
-   automake \
-   libtool \
-   zlib1g-dev \
-   libboost-all-dev \
-   libbz2-dev \
-   liblzma-dev \
-   python-dev \
-   libsoap-lite-perl \
-   libxmlrpc-core-c3-dev libxmlrpc-c++8-dev \
-   locales \
-   google-perftools
+   unzip build-essential wget g++ git subversion automake \
+   libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev \
+   python-dev libsoap-lite-perl libxmlrpc-core-c3-dev \
+   libxmlrpc-c++8-dev locales google-perftools gosu
 
 RUN mkdir -p /home/moses
 RUN locale-gen en_GB.UTF-8
@@ -30,14 +20,6 @@ ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 ENV PYTHONIOENCODING=utf-8
 
 WORKDIR /home/moses
-
-# Build boost
-#
-# RUN wget http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.gz
-# RUN tar zxvf boost_1_55_0.tar.gz
-# WORKDIR /home/moses/boost_1_55_0
-# RUN ./bootstrap.sh
-# RUN ./b2 -j8 --prefix=$PWD --libdir=$PWD/lib64 --layout=system link=static install || echo FAILURE
 
 # Build cmph
 #
@@ -52,10 +34,11 @@ RUN ./configure --prefix=/usr/local && make && make install prefix=/usr/local/cm
 WORKDIR /home/moses
 RUN git clone https://github.com/moses-smt/mosesdecoder.git
 WORKDIR /home/moses/mosesdecoder
-# RUN ./bjam --with-boost=/home/moses/boost_1_55_0 --with-cmph=/usr/local/cmph -j8  --with-xmlrpc-c=/usr
 RUN ./bjam --with-boost=/usr/lib/x86_64-linux-gnu --with-cmph=/usr/local/cmph -j8  --with-xmlrpc-c=/usr
-# The config adds "bin/xmlrpc-c-config" to that path
+# The config adds "bin/xmlrpc-c-config" to "/usr"
 
+# Include sample models
+#
 WORKDIR /home/moses
 RUN wget http://www.statmt.org/moses/download/sample-models.tgz
 RUN tar xzf sample-models.tgz
@@ -71,5 +54,11 @@ RUN mkdir tools
 WORKDIR /home/moses/giza-pp
 RUN cp GIZA++-v2/GIZA++ GIZA++-v2/snt2cooc.out mkcls-v2/mkcls /home/moses/mosesdecoder/tools
 
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 WORKDIR /home/moses
 COPY train.py .
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# docker run ... -e LOCAL_USER_ID=`id -u $USER` <image> /bin/bash
