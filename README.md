@@ -3,13 +3,13 @@ An Ubuntu 18.10-based dockerfile for running [Moses](http://www.statmt.org/moses
 
 To create the image, run
 
-    $ git clone https://github.com/skurik/moses-docker.git
+    $ git clone https://github.com/adam-funk/moses-docker.git
     $ cd moses-docker
-    $ docker build -t <user>/moses .
+    $ docker build -t moses .
     
 To run the container, execute
 
-    $ docker run -t -i <user>/moses /bin/bash
+    $ docker run -t -i moses
     
 Now you can verify that Moses is working:
 
@@ -21,4 +21,10 @@ Now you can verify that Moses is working:
 
 # Requirements
 
-As compiling [boost](http://www.boost.org) is part of building the image, I recommend to have at least 5 GB of RAM.
+No longer compiling boost (the Ubuntu 18.10 package is new enough), but it takes quite a bit of memory to build cmph, giza, and moses.
+
+# TODO
+
+- improve and generalize training script in docker image
+- include server running script in docker image
+- provide sh scripts for building and running docker image
