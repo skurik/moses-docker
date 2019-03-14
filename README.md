@@ -25,6 +25,7 @@ No longer compiling boost (the Ubuntu 18.10 package is new enough), but it takes
 
 # TODO
 
+- replace the python script with separate working bash scripts for the languages, using common crawl corpora
 - improve and generalize training script in docker image
 - include server running script in docker image
 - provide sh scripts for building and running docker image
