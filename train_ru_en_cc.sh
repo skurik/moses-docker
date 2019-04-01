@@ -36,18 +36,18 @@ ${MOSES_DIR}/scripts/training/train-model.perl --root-dir train  \
    -reordering msd-bidirectional-fe -lm 0:3:commoncrawl.ru-en.blm.en:8 \
    -external-bin-dir ${MOSES_DIR}/tools >& training.out
 
-${MOSES_DIR}/scripts/tokenizer/tokenizer.perl -l en <${TUNING_DIR}/newstest2013.en >newstest2013.tok.en
+${MOSES_DIR}/scripts/tokenizer/tokenizer.perl -l en <${TUNING_DIR}/newstest2012.en >newstest2012.tok.en
 
-${MOSES_DIR}/scripts/tokenizer/tokenizer.perl -l ru <${TUNING_DIR}/newstest2013.ru >newstest2013.tok.ru
+${MOSES_DIR}/scripts/tokenizer/tokenizer.perl -l ru <${TUNING_DIR}/newstest2012.ru >newstest2012.tok.ru
 
-${MOSES_DIR}/scripts/recaser/truecase.perl --model truecase-model.en   <newstest2013.tok.en >newstest2013.true.en
+${MOSES_DIR}/scripts/recaser/truecase.perl --model truecase-model.en   <newstest2012.tok.en >newstest2012.true.en
 
-${MOSES_DIR}/scripts/recaser/truecase.perl --model truecase-model.ru   <newstest2013.tok.ru >newstest2013.true.ru
+${MOSES_DIR}/scripts/recaser/truecase.perl --model truecase-model.ru   <newstest2012.tok.ru >newstest2012.true.ru
 
 cd ${FINAL_DIR}
 
-${MOSES_DIR}/scripts/training/mert-moses.pl  ${WORKING_DIR}/newstest2013.true.ru  \
-   ${WORKING_DIR}/newstest2013.true.en ${MOSES_DIR}/bin/moses  ${WORKING_DIR}/train/model/moses.ini  \
+${MOSES_DIR}/scripts/training/mert-moses.pl  ${WORKING_DIR}/newstest2012.true.ru  \
+   ${WORKING_DIR}/newstest2012.true.en ${MOSES_DIR}/bin/moses  ${WORKING_DIR}/train/model/moses.ini  \
    --mertdir ${MOSES_DIR}/bin &>mert.out 
 
 # TODO once it works
