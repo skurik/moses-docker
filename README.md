@@ -1,18 +1,27 @@
 # moses-docker
 An Ubuntu 18.10-based dockerfile for running [Moses](http://www.statmt.org/moses)
 
-To create the image, run
+To create the image:
 
     $ git clone https://github.com/adam-funk/moses-docker.git
     $ cd moses-docker
     $ docker build -t moses .
+
+To download the training and tuning data:
+
     $ docker volume create moses-data
-    
-To run the container, execute
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora -t -i moses
+    # ./download.sh
 
-    $ docker run --mount type=volume,src=moses-data,dst=/data -t -i moses
+To train a model:
+   
+   $ docker volume create moses-ru-en
+   $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
+   # ./train_ru_en.sh
 
-    $ ./download.sh
+To run the service:
+   $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
+   # ...
 
 Now you can verify that Moses is working:
 
@@ -22,7 +31,7 @@ Now you can verify that Moses is working:
     Translating: das ist ein kleines haus
     BEST TRANSLATION: this is a small house [11111]  [total=-28.923] core=(-27.091,0.000,-5.000,0.000,-1.833)
 
-# Requirements
+# Notes
 
 - It takes quite a bit of memory to build cmph, giza, and moses: better to build the image on the server than on a laptop.
 
@@ -32,6 +41,6 @@ Now you can verify that Moses is working:
 # TODO
 
 - WIP: replace the python script with separate working bash scripts for the languages, using common crawl corpora
-- use two volumes: one for downloaded data, the other for the models
+- WIP: use two volumes: one for downloaded data, the other for the models
 - include server running script in docker image
 - provide sh scripts for building and running docker image
