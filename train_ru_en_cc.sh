@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# models to
-#  /data/...
+set -e
 
 TRAINING_DIR="/data/corpora/training"
 TUNING_DIR="/data/corpora/tuning"
