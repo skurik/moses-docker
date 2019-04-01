@@ -6,6 +6,8 @@ MAINTAINER Standa Kurik "standa.kurik@gmail.com"
 # ownership of /data/...
 # See https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 
+RUN id
+
 # base tools
 RUN apt-get update
 RUN apt-get install -y \
