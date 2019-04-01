@@ -3,12 +3,12 @@
 # models to
 #  /data/...
 
-TRAINING_DIR="${HOME}/corpora/training"
-TUNING_DIR="${HOME}/corpora/tuning"
+TRAINING_DIR="/data/corpora/training"
+TUNING_DIR="/data/corpora/tuning"
 MOSES_DIR="${HOME}/mosesdecoder"
 
-FINAL_DIR="/data"
-WORKING_DIR="${FINAL_DIR}/working"
+FINAL_DIR="/data/model"
+WORKING_DIR="/data/model/working"
 
 mkdir -p ${WORKING_DIR}
 
@@ -51,3 +51,5 @@ ${MOSES_DIR}/scripts/training/mert-moses.pl  ${WORKING_DIR}/newstest2013.true.ru
    ${WORKING_DIR}/newstest2013.true.en ${MOSES_DIR}/bin/moses  ${WORKING_DIR}/train/model/moses.ini  \
    --mertdir ${MOSES_DIR}/bin &>mert.out 
 
+# TODO once it works
+# rm -fr ${WORKING_DIR}
