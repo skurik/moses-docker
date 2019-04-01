@@ -21,7 +21,10 @@ Now you can verify that Moses is working:
 
 # Requirements
 
-No longer compiling boost (the Ubuntu 18.10 package is new enough), but it takes quite a bit of memory to build cmph, giza, and moses.
+- It takes quite a bit of memory to build cmph, giza, and moses: better to build the image on the server than on a laptop.
+
+- No longer compiling boost (the Ubuntu 18.10 package is recent enough).
+
 
 # TODO
 
