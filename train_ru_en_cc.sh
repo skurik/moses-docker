@@ -38,6 +38,8 @@ ${MOSES_DIR}/scripts/training/train-model.perl --root-dir train  \
    -reordering msd-bidirectional-fe -lm 0:3:${WORKING_DIR}/commoncrawl.ru-en.blm.en:8 \
    -external-bin-dir ${MOSES_DIR}/tools >& training.out
 
+tail training.out
+
 echo "Training complete!"
 
 ${MOSES_DIR}/scripts/tokenizer/tokenizer.perl -l en <${TUNING_DIR}/newstest2012.en >newstest2012.tok.en
@@ -55,6 +57,8 @@ cd ${FINAL_DIR}
 ${MOSES_DIR}/scripts/training/mert-moses.pl  ${WORKING_DIR}/newstest2012.true.ru  \
    ${WORKING_DIR}/newstest2012.true.en ${MOSES_DIR}/bin/moses  ${WORKING_DIR}/train/model/moses.ini  \
    --mertdir ${MOSES_DIR}/bin &>mert.out 
+
+tail mert.out
 
 echo "Tuning complete!"
 
