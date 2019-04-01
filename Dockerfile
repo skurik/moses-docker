@@ -60,8 +60,8 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /home/moses
-COPY train* ./
 COPY download.sh ./
+COPY train* ./
 
 # fix this later
 #ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
