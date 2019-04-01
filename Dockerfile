@@ -58,7 +58,9 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /home/moses
-COPY train.py .
+COPY train* .
+COPY download.sh .
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # docker run ... -e LOCAL_USER_ID=`id -u $USER` <image> /bin/bash
