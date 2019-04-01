@@ -20,6 +20,7 @@ To train a model:
     # ./train_ru_en.sh
 
 To run the service:
+
     $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
     # ...
 
