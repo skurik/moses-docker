@@ -16,3 +16,6 @@ cd ..
 tar zxf dev.tgz
 # unpacks into dev/*
 mv dev tuning
+
+# now we only need the unpacked data
+rm training-parallel-commoncrawl.tgz dev.tgz
