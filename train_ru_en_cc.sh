@@ -5,7 +5,7 @@
 
 TRAINING_DIR="/data/corpora/training"
 TUNING_DIR="/data/corpora/tuning"
-MOSES_DIR="${HOME}/mosesdecoder"
+MOSES_DIR="/home/moses/mosesdecoder"
 
 FINAL_DIR="/data/model"
 WORKING_DIR="/data/model/working"
