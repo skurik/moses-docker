@@ -7,7 +7,7 @@ To create the image:
     $ cd moses-docker
     $ docker build -t moses .
 
-To download the training and tuning data:
+To download the training and tuning data (you only need to do this once; keep the moses-data volume for subsequent training runs):
 
     $ docker volume create moses-data
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora -t -i moses
@@ -15,13 +15,13 @@ To download the training and tuning data:
 
 To train a model:
    
-   $ docker volume create moses-ru-en
-   $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
-   # ./train_ru_en.sh
+    $ docker volume create moses-ru-en
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
+    # ./train_ru_en.sh
 
 To run the service:
-   $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
-   # ...
+    $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
+    # ...
 
 Now you can verify that Moses is working:
 
