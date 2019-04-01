@@ -16,21 +16,13 @@ To download the training and tuning data (you only need to do this once; keep th
 To train a model:
    
     $ docker volume create moses-ru-en
-    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -rm -t -i moses
     # ./train_ru_en.sh
 
 To run the service:
 
     $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
     # ...
-
-Now you can verify that Moses is working:
-
-    $ root@5618c50d37eb:/home/moses# cd sample-models
-    $ root@5618c50d37eb:/home/moses# ../mosesdecoder/bin/moses -f phrase-model/moses.ini < phrase-model/in
-    ...
-    Translating: das ist ein kleines haus
-    BEST TRANSLATION: this is a small house [11111]  [total=-28.923] core=(-27.091,0.000,-5.000,0.000,-1.833)
 
 # Notes
 
