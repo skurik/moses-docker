@@ -34,8 +34,8 @@ ${MOSES_DIR}/bin/lmplz -o 3 <commoncrawl.ru-en.true.en   >commoncrawl.ru-en.arpa
 ${MOSES_DIR}/bin/build_binary commoncrawl.ru-en.arpa.en commoncrawl.ru-en.blm.en
 
 ${MOSES_DIR}/scripts/training/train-model.perl --root-dir train  \
-   -corpus commoncrawl.ru-en.clean -f ru -e en -alignment grow-diag-final-and \
-   -reordering msd-bidirectional-fe -lm 0:3:commoncrawl.ru-en.blm.en:8 \
+   -corpus ${WORKING_DIR}/commoncrawl.ru-en.clean -f ru -e en -alignment grow-diag-final-and \
+   -reordering msd-bidirectional-fe -lm 0:3:${WORKING_DIR}/commoncrawl.ru-en.blm.en:8 \
    -external-bin-dir ${MOSES_DIR}/tools >& training.out
 
 echo "Training complete!"
