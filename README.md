@@ -7,22 +7,26 @@ To create the image:
     $ cd moses-docker
     $ docker build -t moses .
 
-To download the training and tuning data (you only need to do this once; keep the moses-data volume for subsequent training runs):
+To download the training and tuning data (you only need to do this once; keep the `moses-data` volume for subsequent training runs):
 
     $ docker volume create moses-data
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora -t -i moses
     # ./download.sh
 
-To train a model (final file is `/data/models/mert-work/moses-ini`):
+To train a model (final output is based on `/data/models/mert-work/moses-ini`, which points to other data files):
    
     $ docker volume create moses-ru-en
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -rm -t -i moses
     # ./train_ru_en.sh
 
-To run the service:
+    $ docker volume create moses-de-en
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-de-en,dst=/data/model -rm -t -i moses
+    # ./train_de_en.sh
 
-    $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -t -i moses
-    # ...
+To run the service (you can change the published port):
+
+    $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -p 8080:8080 -t -i moses
+    # ./server.sh
 
 # Notes
 
@@ -30,10 +34,14 @@ To run the service:
 
 - No longer compiling boost (the Ubuntu 18.10 package is recent enough).
 
+- You can create the `moses-data` volume and download the data once, keeping the volume for re-use with different language combinations.
+
+- Training requires the `moses-data` volume and another volume to build the intermediate and final models in.
+
+- Running the service requires only the volume with the trained models.
+
+- The service runs on port 8080 inside the container, but you can publish it to any port.
 
 # TODO
 
-- WIP: replace the python script with separate working bash scripts for the languages, using common crawl corpora
-- WIP: use two volumes: one for downloaded data, the other for the models
-- include server running script in docker image
-- provide sh scripts for building and running docker image
+- Python client library
