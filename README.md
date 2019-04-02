@@ -13,7 +13,7 @@ To download the training and tuning data (you only need to do this once; keep th
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora -t -i moses
     # ./download.sh
 
-To train a model:
+To train a model (final file is `/data/models/mert-work/moses-ini`):
    
     $ docker volume create moses-ru-en
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -rm -t -i moses
