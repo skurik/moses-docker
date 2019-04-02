@@ -42,6 +42,12 @@ To run the service (you can change the published port):
 
 - The service runs on port 8080 inside the container, but you can publish it to any port.
 
+# Moses documentation
+
+- <http://www.statmt.org/moses/?n=Moses.Baseline>
+
+- <http://www.statmt.org/moses/?n=Advanced.Moses>
+
 # TODO
 
 - Python client library
