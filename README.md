@@ -16,11 +16,11 @@ To download the training and tuning data (you only need to do this once; keep th
 To train a model (final output is based on `/data/models/mert-work/moses-ini`, which points to other data files):
    
     $ docker volume create moses-ru-en
-    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model -rm -t -i moses
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-ru-en,dst=/data/model --rm -t -i moses
     # ./train_ru_en.sh
 
     $ docker volume create moses-de-en
-    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-de-en,dst=/data/model -rm -t -i moses
+    $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-de-en,dst=/data/model --rm -t -i moses
     # ./train_de_en.sh
 
 To run the service (you can change the published port):
