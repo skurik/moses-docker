@@ -51,3 +51,5 @@ To run the service (you can change the published port):
 # TODO
 
 - Python client library
+
+- Fix the entrypoint system and make readable log files
