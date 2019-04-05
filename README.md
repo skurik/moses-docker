@@ -23,9 +23,9 @@ To train a model (final output is based on `/data/models/mert-work/moses-ini`, w
     $ docker run --mount type=volume,src=moses-data,dst=/data/corpora --mount type=volume,src=moses-de-en,dst=/data/model --rm -t -i moses
     # ./train_de_en.sh
 
-To run the service (you can change the published port):
+To run the service and publish it on port 9000 (you can change that value):
 
-    $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -p 8080:8080 -t -i moses
+    $ docker run --mount type=volume,src=moses-ru-en,dst=/data/model -p 9000:8080 -t -i moses
     # ./server.sh
 
 # Notes
@@ -36,11 +36,11 @@ To run the service (you can change the published port):
 
 - You can create the `moses-data` volume and download the data once, keeping the volume for re-use with different language combinations.
 
-- Training requires the `moses-data` volume and another volume to build the intermediate and final models in.
+- Training requires the `moses-data` volume and another volume to build the models in.
 
 - Running the service requires only the volume with the trained models.
 
-- The service runs on port 8080 inside the container, but you can publish it to any port.
+- The service runs on port 8080 inside the container and you can publish it to any port.
 
 # Moses documentation
 
