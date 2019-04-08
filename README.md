@@ -44,18 +44,22 @@ To run the service and publish it on port 9000 (you can change that value):
 
 # Acknowledgements
 
-This work is funded by the European Union's Horizon 2020 research and
-innovation programme under the [SoBigData](http://sobigdata.eu/)
-project (grant agreement 654024) and the [European Language
+This work is funded by the European Union's Horizon 2020 research and innovation programme under the
+[SoBigData](http://sobigdata.eu/) project (grant agreement 654024) and the [European Language
 Grid](https://cordis.europa.eu/project/rcn/219378/factsheet/en)
-[https://www.european-language-grid.eu/] project (grant agreement
-825627).
+[https://www.european-language-grid.eu/] project (grant agreement 825627).
 
-# Moses documentation
+The Dockerfile in this repository is forked from (skurik's original
+version)[https://github.com/skurik/moses-docker] which does not specify a license.
 
-- <http://www.statmt.org/moses/?n=Moses.Baseline>
+The corpora used in the automatic download and training scripts are linked from the (Moses
+documentation)[http://www.statmt.org/moses/?n=Moses.LinksToCorpora] and (ACL 2013 translation
+task)[http://www.statmt.org/wmt13/translation-task.html]. We make no claims about copyright issues
+or licensing for them.
 
-- <http://www.statmt.org/moses/?n=Advanced.Moses>
+The training and server scripts provides are based on the (Moses
+baseline)[http://www.statmt.org/moses/?n=Moses.Baseline] and (Moses as a
+Service)[http://www.statmt.org/moses/?n=Advanced.Moses] documentation.
 
 # TODO
 
