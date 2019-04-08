@@ -42,6 +42,15 @@ To run the service and publish it on port 9000 (you can change that value):
 
 - The service runs on port 8080 inside the container and you can publish it to any port.
 
+# Acknowledgements
+
+This work is funded by the European Union's Horizon 2020 research and
+innovation programme under the [SoBigData](http://sobigdata.eu/)
+project (grant agreement 654024) and the [European Language
+Grid](https://cordis.europa.eu/project/rcn/219378/factsheet/en)
+[https://www.european-language-grid.eu/] project (grant agreement
+825627).
+
 # Moses documentation
 
 - <http://www.statmt.org/moses/?n=Moses.Baseline>
