@@ -56,12 +56,12 @@ The corpora used in the automatic download and training scripts are linked from 
 [ACL 2013 translation task](http://www.statmt.org/wmt13/translation-task.html).
 We make no claims about copyright issues or licensing for them.
 
-The training and server scripts provides are based on the
+The training and server scripts provided are based on the
 [Moses baseline](http://www.statmt.org/moses/?n=Moses.Baseline) and
 [Moses as a Service](http://www.statmt.org/moses/?n=Advanced.Moses) documentation.
 
-# TODO
+# WIP/TODO
 
-- Python client library
+- Wrapper around XML-RPC to provide a simpler REST API
 
 - Fix the entrypoint system and make readable log files
