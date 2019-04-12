@@ -1,7 +1,7 @@
 # Version 0.0.1
 FROM ubuntu:cosmic
 
-MAINTAINER Standa Kurik "standa.kurik@gmail.com"
+MAINTAINER Adam Funk "a.funk@sheffield.ac.uk"
 
 # ownership of /data/...
 # See https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
@@ -9,8 +9,8 @@ MAINTAINER Standa Kurik "standa.kurik@gmail.com"
 RUN id
 
 # base tools
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt update
+RUN apt install -y \
    unzip build-essential wget g++ git subversion automake \
    libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev \
    python-dev libsoap-lite-perl libxmlrpc-core-c3-dev python3-bottle \
