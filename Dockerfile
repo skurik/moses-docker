@@ -13,15 +13,13 @@ RUN apt-get update
 RUN apt-get install -y \
    unzip build-essential wget g++ git subversion automake \
    libtool zlib1g-dev libboost-all-dev libbz2-dev liblzma-dev \
-   python-dev libsoap-lite-perl libxmlrpc-core-c3-dev \
+   python-dev libsoap-lite-perl libxmlrpc-core-c3-dev python3-bottle \
    libxmlrpc-c++8-dev locales google-perftools gosu
 
 RUN mkdir -p /home/moses
 RUN locale-gen en_GB.UTF-8
 ENV LANG='en_GB.UTF-8' LANGUAGE='en_GB:en' LC_ALL='en_GB.UTF-8'
 ENV PYTHONIOENCODING=utf-8
-
-WORKDIR /home/moses
 
 # Build cmph
 #
@@ -60,7 +58,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 WORKDIR /home/moses
-COPY  download.sh server.sh train*  ./
+COPY  download.sh server.sh train* server-wrapper.py  ./
 
 # fix this later
 #ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
